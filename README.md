@@ -20,10 +20,9 @@ If you are grouped and group leader does a "Reset all instances" you will have t
 If the group leader have TurtleCalendar installed you do not need to do this.
 
 > [!NOTE]
-> Reset timers have only been added for european server.
-> Nordanaar is 100% correct. Tel`Abim should be correct except Edge of Madness which currently is the same as Nordanaar.
-> Reset timers for Ambershire are currently the same as Nordanaar and probably wrong.
-> Please post a new issue under Issues if you play on another server and know the reset times.
+> Supported realms and reset timers:
+> * **Turtle WoW:** Nordanaar, Tel'Abim, Ambershire
+> * **Capybara Paradise (Capycraft):** Eversong Wilds, Basin of Stars, Gehennas (updated with 2026 reset anchors)
 
 <img width="1351" height="577" alt="Turtle Calendar" src="https://github.com/user-attachments/assets/e6369d2e-5b78-4df3-b1f4-e0968873019c" />
 
@@ -44,14 +43,23 @@ See https://documentation.help/Manuale_LUA/dateformat.htm for details on how to 
 
 ## 📦 Installation
 
-Using the Turtle Wow Launcher:
+> [!IMPORTANT]
+> **Folder Name Requirement:**
+> The addon directory inside `Interface\AddOns\` **MUST** be named exactly `TurtleCalendar`.
+> If you downloaded a ZIP from GitHub, it may extract as `TurtleCalendar-main`. You **must rename** the folder to `TurtleCalendar`, otherwise World of Warcraft will not recognize or load the addon.
 
-Copy and paste https://github.com/sica42/TurtleCalendar into the launcher.
+1. Download or clone the addon.
+2. Place the folder into your `World of Warcraft\Interface\AddOns\` directory.
+3. Verify the folder name is `TurtleCalendar`.
+4. Launch/restart WoW and ensure `TurtleCalendar` is checked in the AddOns menu at character select.
 
-Manual install:
-1. Download or clone the addon into your `Interface\AddOns\` folder.
-2. Make sure the folder is named `TurtleCalendar`.
-3. Restart WoW.
+---
+
+## 🙏 Credits & Attribution
+
+* **Original Creator:** [sica42](https://github.com/sica42/TurtleCalendar) — Created the original TurtleCalendar addon for Turtle WoW.
+* **Capybara Paradise Support:** Adapted by Melchz with 2026 raid reset anchors for Eversong Wilds, Basin of Stars, and Gehennas.
+* **Chinese Localization:** Community contributions for font and translation fixes.
 
 ---
 

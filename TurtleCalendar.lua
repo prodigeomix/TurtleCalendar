@@ -1,7 +1,7 @@
 ---@class TurtleCalendar
 TurtleCalendar = TurtleCalendar or {}
 
-TurtleCalendar.translations = (TurtleCalendar_translation[ GetLocale() or "enUS" ])
+TurtleCalendar.translations = TurtleCalendar_translation[ GetLocale() ] or TurtleCalendar_translation[ "enUS" ] or {}
 
 -- use table index key as translation fallback
 TurtleCalendar.T = setmetatable( TurtleCalendar.translations, {
@@ -103,35 +103,65 @@ function TurtleCalendar:init()
 	self.utc_offset = m.get_utc_offset()
 	self.reset_pattern = string.gsub( INSTANCE_RESET_SUCCESS, "%%s", "(.+)" )
 	self.timers = {
+		[ "Eversong Wilds" ] = {
+			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 16, hour = 3 } ) },
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 20, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 15, hour = 3 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 3 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 11, hour = 3 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 23 } ) },
+			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 30, hour = 23 } ) }
+		},
+		[ "Basin of Stars" ] = {
+			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 4, hour = 3 } ) },
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
+		},
+		[ "Gehennas" ] = {
+			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 3, hour = 3 } ) },
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 1, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
+		},
 		[ "Nordanaar" ] = {
 			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 3, hour = 3 } ) },
-			[ "ony" ] = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 1, hour = 3 } ) },
-			[ "kara" ] = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
-			[ "zg" ] = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
-			[ "tmh" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
-			[ "eom" ] = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ] = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
-			[ "dmf" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 1, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Tel'Abim" ] = {
 			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 4, hour = 3 } ) },
-			[ "ony" ] = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
-			[ "kara" ] = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
-			[ "zg" ] = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
-			[ "tmh" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
-			[ "eom" ] = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ] = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
-			[ "dmf" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Ambershire" ] = {
 			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 3, hour = 3 } ) },
-			[ "ony" ] = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 1, hour = 3 } ) },
-			[ "kara" ] = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
-			[ "zg" ] = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
-			[ "tmh" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
-			[ "eom" ] = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ] = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
-			[ "dmf" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 1, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 	}
 
@@ -234,13 +264,16 @@ function TurtleCalendar.events.PLAYER_LOGIN()
 		end )
 	end
 
-	m.version = GetAddOnMetadata( m.name, "Version" )
+	m.version = GetAddOnMetadata( m.name, "Version" ) or "1.4.2"
 	m.info( string.format( "(v%s) Loaded", m.version ) )
 
-	-- Fallback to Nordanaar if unknown realm.
-	if m.realm ~= "Nordanaar" and m.realm ~= "Tel'Abim" and m.realm ~= "Ambershire" then
-		m.info( "Raid timers for " .. m.realm .. " not found, using Nordanaar timers." )
-		m.realm = "Nordanaar"
+	-- Fallback to Eversong Wilds if unknown realm.
+	if not m.timers[ m.realm ] then
+		m.info( "Raid timers for " .. m.realm .. " not found, using Eversong Wilds timers." )
+		m.timers[ m.realm ] = m.timers[ "Eversong Wilds" ]
+	end
+	if not m.gdb.lockouts[ m.realm ] then
+		m.gdb.lockouts[ m.realm ] = {}
 	end
 end
 
@@ -300,6 +333,7 @@ function TurtleCalendar.events.UPDATE_INSTANCE_INFO()
 		end
 	end
 
+	m.gdb.lockouts[ m.realm ] = m.gdb.lockouts[ m.realm ] or {}
 	m.gdb.lockouts[ m.realm ][ m.player ] = m.instances
 end
 
@@ -827,6 +861,7 @@ function TurtleCalendar.create_frame()
 
 	-- Character dropdown
 	local chars = 0
+	m.gdb.lockouts[ m.realm ] = m.gdb.lockouts[ m.realm ] or {}
 	for player in pairs( m.gdb.lockouts[ m.realm ] ) do
 		if player ~= m.player and next( m.gdb.lockouts[ m.realm ][ player ] ) then chars = chars + 1 end
 	end
