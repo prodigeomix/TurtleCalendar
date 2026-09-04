@@ -104,23 +104,23 @@ function TurtleCalendar:init()
 	self.reset_pattern = string.gsub( INSTANCE_RESET_SUCCESS, "%%s", "(.+)" )
 	self.timers = {
 		[ "Eversong Wilds" ] = {
-			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 16, hour = 3 } ) },
-			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 20, hour = 3 } ) },
-			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 15, hour = 3 } ) },
-			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 3 } ) },
-			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 11, hour = 3 } ) },
+			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 16, hour = 4 } ) },
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 20, hour = 4 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 15, hour = 4 } ) },
+			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 4 } ) },
+			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 11, hour = 4 } ) },
 			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Basin of Stars" ] = {
 			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 4, hour = 3 } ) },
-			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
-			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 3 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
 			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Gehennas" ] = {
@@ -130,7 +130,7 @@ function TurtleCalendar:init()
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
 			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Nordanaar" ] = {
@@ -140,17 +140,17 @@ function TurtleCalendar:init()
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
 			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Tel'Abim" ] = {
 			[ "raid40" ] = { interval = 7, anchor = m.time_utc( { year = 2025, month = 9, day = 4, hour = 3 } ) },
-			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
-			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 3 } ) },
+			[ "ony" ]    = { interval = 5, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 3 } ) },
+			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 3 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
 			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 		[ "Ambershire" ] = {
@@ -160,7 +160,7 @@ function TurtleCalendar:init()
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
 			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
-			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 9, day = 0, hour = 23 } ) },
+			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
 	}
@@ -264,7 +264,7 @@ function TurtleCalendar.events.PLAYER_LOGIN()
 		end )
 	end
 
-	m.version = GetAddOnMetadata( m.name, "Version" ) or "1.4.2"
+	m.version = GetAddOnMetadata( m.name, "Version" ) or "1.4.3"
 	m.info( string.format( "(v%s) Loaded", m.version ) )
 
 	-- Fallback to Eversong Wilds if unknown realm.
@@ -437,13 +437,28 @@ function TurtleCalendar.check_instance()
 end
 
 function TurtleCalendar.clear_expired_instances()
+	if getn( m.db.instances ) == 0 then
+		if m.db.last_instance ~= "" then
+			m.db.last_instance = ""
+		end
+		return
+	end
+
 	local now = time()
+	local has_expired = false
+	for _, v in ipairs( m.db.instances ) do
+		if v.timestamp and (now - v.timestamp >= 3600) then
+			has_expired = true
+			break
+		end
+	end
+
+	if not has_expired then return end
+
 	local instances = {}
 	for _, v in ipairs( m.db.instances ) do
-		if v.timestamp then
-			if (now - v.timestamp < 3600) then
-				table.insert( instances, v )
-			end
+		if v.timestamp and (now - v.timestamp < 3600) then
+			table.insert( instances, v )
 		end
 	end
 
@@ -1100,7 +1115,7 @@ function TurtleCalendar.on_update()
 				end
 
 				if m.db.show_dates then
-					box.date:SetText( date( m.db.date_format, time( date( "*t", next ) ) ) )
+					box.date:SetText( date( m.db.date_format, next ) )
 				end
 			end
 		end
@@ -1180,7 +1195,7 @@ function TurtleCalendar.refresh()
 				if m.current_player then
 					local next = m.next_raid( m.timers[ m.realm ][ v ] )
 
-					if date( m.db.date_format, time( date( "*t", next ) ) ) ~= date( m.db.date_format, time( date( "*t", m.instances[ k ].timestamp + m.instances[ k ].reset ) ) ) then
+					if date( m.db.date_format, next ) ~= date( m.db.date_format, m.instances[ k ].timestamp + m.instances[ k ].reset ) then
 						skip = true
 					end
 				end
@@ -1557,9 +1572,14 @@ function TurtleCalendar.debug( message )
 	end
 end
 
+local days_before_month = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 }
+
+local function is_leap_year( y )
+	return (math.mod( y, 4 ) == 0 and math.mod( y, 100 ) ~= 0) or (math.mod( y, 400 ) == 0)
+end
+
 function TurtleCalendar.get_utc_offset()
 	-- Calculate the difference between local time and UTC
-	-- by comparing the number of seconds since the start of the year
 	local now = time()
 	local utc_table = date( "!*t", now )
 	local utc_seconds = (utc_table.hour * 3600) + (utc_table.min * 60) + utc_table.sec + ((utc_table.yday - 1) * 24 * 3600)
@@ -1569,20 +1589,34 @@ function TurtleCalendar.get_utc_offset()
 	return local_seconds - utc_seconds
 end
 
+---Convert a date table { year, month, day, hour, min, sec } into a deterministic UTC epoch timestamp.
+---Does NOT depend on client operating system timezone or local Daylight Saving Time (DST).
+---@param t table
+---@return integer seconds
 function TurtleCalendar.time_utc( t )
-	return time( t ) + m.utc_offset
+	local year = t.year
+	local month = t.month
+	local day = t.day
+	local hour = t.hour or 0
+	local min = t.min or 0
+	local sec = t.sec or 0
+
+	local y = year - 1
+	local leap_days = math.floor( y / 4 ) - math.floor( y / 100 ) + math.floor( y / 400 ) - 477
+	local days = (year - 1970) * 365 + leap_days + days_before_month[ month ] + (day - 1)
+	if month > 2 and is_leap_year( year ) then
+		days = days + 1
+	end
+
+	return days * 86400 + hour * 3600 + min * 60 + sec
 end
 
+---Universal epoch time (seconds since 1970-01-01 00:00:00 UTC).
+---In WoW 1.12, time() returns POSIX epoch seconds, which is identical on every client globally.
 ---@return integer seconds
 ---@nodiscard
 function TurtleCalendar.get_server_time()
-	local server_ts = time()
-	local t = date( "*t", server_ts )
-	if not t.isdst then
-		server_ts = server_ts - 3600
-	end
-
-	return server_ts
+	return time()
 end
 
 ---@return integer
@@ -1625,17 +1659,14 @@ function TurtleCalendar.seconds_dhms( seconds )
 end
 
 function TurtleCalendar.get_last_thursday( ts )
-	ts = ts or time() + 3600
-	-- Server is 4h ahead of UTC
-	local t = date( "*t", m.time_utc( date( "*t", ts ) ) - (3600 * 4) )
+	ts = ts or time()
+	-- Weekly reset occurs on Thursday at 04:00 UTC
+	local t = date( "!*t", ts - 14400 )
 	local wday = t.wday
 	local days_back = (wday >= 5) and (wday - 5) or (7 - (5 - wday))
-	t.day = t.day - days_back
-	t.hour = 0
-	t.min = 0
-	t.sec = 0
+	local day_sec = (t.hour * 3600) + (t.min * 60) + t.sec
 
-	return time( t )
+	return (ts - 14400) - (days_back * 86400) - day_sec
 end
 
 ---@param value string|number
