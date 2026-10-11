@@ -216,6 +216,22 @@ function TurtleCalendar.events.PLAYER_LOGIN()
 		table.insert( m.db.boxes, 5, { "tmh", true } )
 	end
 
+	if (not m.find( "wb", m.db.boxes, 1 )) then
+		table.insert( m.db.boxes, { "wb", true } )
+	else
+		-- Ensure wb is positioned after instances for bottom-row alignment
+		local wb_idx = nil
+		local inst_idx = nil
+		for idx, binfo in ipairs( m.db.boxes ) do
+			if binfo[ 1 ] == "wb" then wb_idx = idx end
+			if binfo[ 1 ] == "instances" then inst_idx = idx end
+		end
+		if wb_idx and inst_idx and wb_idx < inst_idx then
+			local wb_entry = table.remove( m.db.boxes, wb_idx )
+			table.insert( m.db.boxes, wb_entry )
+		end
+	end
+
 	-- Global DB
 	TurtleCalendarGlobalOptions = TurtleCalendarGlobalOptions or {}
 	m.gdb = TurtleCalendarGlobalOptions
@@ -227,6 +243,9 @@ function TurtleCalendar.events.PLAYER_LOGIN()
 
 	---@class WorldBuffs
 	m.world_buffs = m.WorldBuffs.new()
+
+	---@class WorldBosses
+	if m.WorldBosses then m.world_bosses = m.WorldBosses.new() end
 
 	m.font_header = CreateFont( "TCFontHeader" )
 	m.font_header:SetFont( AoboshiOne_font_path, 25, "" )
@@ -335,6 +354,9 @@ function TurtleCalendar.events.UPDATE_INSTANCE_INFO()
 
 	m.gdb.lockouts[ m.realm ] = m.gdb.lockouts[ m.realm ] or {}
 	m.gdb.lockouts[ m.realm ][ m.player ] = m.instances
+	if m.world_bosses and m.world_bosses.update_box then
+		m.world_bosses.update_box()
+	end
 end
 
 function TurtleCalendar.events.PLAYER_REGEN_DISABLED()
@@ -686,7 +708,7 @@ function TurtleCalendar.create_box( parent, data )
 		sub2:SetFontObject( m.font_tiny )
 	end
 
-	if data.id ~= "instances" and data.id ~= "wbuffs" then
+	if data.id ~= "instances" and data.id ~= "wbuffs" and data.id ~= "wb" then
 		local sub3 = frame:CreateFontString( nil, "OVERLAY", "TCFontSmall" )
 		sub3:SetTextColor( 0.8, 0.8, 0.8, 1 )
 		sub3:SetPoint( "Center", frame, "Center", 0, 0 )
@@ -1034,6 +1056,20 @@ function TurtleCalendar.create_frame()
 	} )
 	m.boxes.instances:SetPoint( "TopLeft", m.boxes.dmf, "TopRight", 5, 0 )
 
+	m.boxes.wb = m.create_box( content, {
+		id = "wb",
+		name = m.T[ "World Bosses" ],
+		background = m.images[ "ony" ],
+		header = m.T[ "World Bosses" ],
+		width = bw,
+		height = 184
+	} )
+	m.boxes.wb:SetPoint( "TopLeft", m.boxes.instances, "TopRight", 5, 0 )
+
+	if m.world_bosses and m.world_bosses.init_box then
+		m.world_bosses.init_box( m.boxes.wb )
+	end
+
 	frame.resize_grip = m.resize_grip( frame )
 	frame.resize_grip:SetPoint( "BottomRight", frame, "BottomRight", -6, 6 )
 
@@ -1279,6 +1315,9 @@ function TurtleCalendar.refresh()
 	end
 
 	m.reorder()
+	if m.world_bosses and m.world_bosses.update_box then
+		m.world_bosses.update_box()
+	end
 end
 
 function TurtleCalendar.popup_menu()
@@ -1331,13 +1370,15 @@ function TurtleCalendar.popup_initialize( level )
 		}
 
 		for i, box in ipairs( m.db.boxes ) do
-			if i == 7 then
+			if box[ 1 ] == "bg" then
 				UIDropDownMenu_AddButton( { isTitle = true, notCheckable = true, text = m.T[ "Misc" ] } )
 			end
-			info.text = m.boxes[ box[ 1 ] ].data.name
-			info.arg1 = i
-			info.checked = m.boxes[ box[ 1 ] ].is_visible
-			UIDropDownMenu_AddButton( info )
+			if m.boxes[ box[ 1 ] ] then
+				info.text = m.boxes[ box[ 1 ] ].data.name
+				info.arg1 = i
+				info.checked = m.boxes[ box[ 1 ] ].is_visible
+				UIDropDownMenu_AddButton( info )
+			end
 		end
 
 		UIDropDownMenu_AddButton( {
@@ -1398,6 +1439,7 @@ function TurtleCalendar.reorder()
 	local vis_small = 0
 	local vis_big = 0
 	local vis_dynamic = 0
+	local vis_wb = 0
 
 	if m.db.show_world_buffs then
 		top = -35
@@ -1414,6 +1456,8 @@ function TurtleCalendar.reorder()
 				vis_big = vis_big + 1
 			elseif box_info[ 1 ] == "instances" then
 				vis_dynamic = vis_dynamic + 1
+			elseif box_info[ 1 ] == "wb" then
+				vis_wb = vis_wb + 1
 			else
 				vis_small = vis_small + 1
 			end
@@ -1448,6 +1492,10 @@ function TurtleCalendar.reorder()
 		if vis_small < 2 then inst_big = even else inst_big = true end
 	end
 
+	if vis_wb > 0 then
+		inst_big = false
+	end
+
 	if m.boxes.instances.is_visible then
 		if inst_big then
 			m.boxes.instances:SetWidth( 413 )
@@ -1468,13 +1516,14 @@ function TurtleCalendar.reorder()
 
 	if vis_small == 0 then
 		m.height = 235
-	elseif vis_big == 0 and vis_dynamic == 0 then
+	elseif vis_big == 0 and vis_dynamic == 0 and vis_wb == 0 then
 		m.height = 270
 	else
 		m.height = 460
 	end
 
-	m.width = 25 + math.max( vis_small * 209, vis_big * 418 + vis_dynamic * (inst_big and 418 or 209) )
+	local row2_w = vis_big * 418 + vis_dynamic * (inst_big and 418 or 209) + vis_wb * 209
+	m.width = 25 + math.max( vis_small * 209, row2_w )
 	m.width = m.width - 30 + (m.frame_padding * 2)
 	m.height = m.height - top - 30 + (m.frame_padding * 2)
 
@@ -1552,6 +1601,14 @@ function TurtleCalendar.slashHandler( args )
 	elseif string.find( args, "^debug" ) then
 		m.debug_enabled = not m.debug_enabled
 		m.info( "Debug is " .. (m.debug_enabled and "enabled." or "disabled.") )
+		return
+	elseif string.find( args, "^wb" ) then
+		if m.world_bosses and m.world_bosses.slash then
+			local sub = string.gsub( args, "^wb%s*", "" )
+			m.world_bosses.slash( sub )
+		else
+			m.info( "World boss tracking is unavailable." )
+		end
 		return
 	end
 	m.toggle()

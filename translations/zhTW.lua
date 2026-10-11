@@ -61,4 +61,5 @@ TurtleCalendar_translation[ "zhTW" ] = {
 	[ "Ruins of Ahn'Qiraj" ] = "安其拉廢墟",
 	[ "Powered by " ] = "技術支援：",
 	[ "ID" ] = "編號",
+	[ "World Bosses" ] = "世界首領",
 }

@@ -61,4 +61,5 @@ TurtleCalendar_translation[ "esES" ] = {
 	[ "Ruins of Ahn'Qiraj" ] = "Ruinas de Ahn'Qiraj",
 	[ "Powered by " ] = "Desarrollado por ",
 	[ "ID" ] = nil,
+	[ "World Bosses" ] = "Jefes del Mundo",
 }

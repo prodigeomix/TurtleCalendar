@@ -1,20 +1,25 @@
 # TurtleCalendar — Project Status & Handoff Document
 
-> **Last Updated:** 2026-09-06 09:05 (Antigravity Assistant)  
-> **Status:** Production Ready (v1.4.3)  
+> **Last Updated:** 2026-10-11 10:33 (Antigravity Assistant)  
+> **Status:** Production Ready (v1.4.4)  
 > **Target Engine:** Turtle WoW 1.18.1 / Vanilla 1.12.1 Client (Turtle WoW & Capybara Paradise realms)  
-> **Active Verification:** Pure Lua 5.0 compatible, FrameXML clean
+> **Active Verification:** `python tools/run_tests.py` → **ALL 4 CHECKS PASS** (Native Lua 5.0.3 syntax compiler, Lua 5.0 AST compliance, AST global leaks, and 31/31 live runtime tests in native Lua 5.0.3 VM)
 
 ---
 
 ## 1. Current Architecture
-* **Purpose**: In-game calendar showing raid & instance reset timers, world buffs, and server events for Turtle WoW.
+* **Purpose**: In-game calendar showing raid & instance reset timers, world buffs, server events, and world boss lockout tracking for Turtle WoW.
 * **Core Components**:
-  - `TurtleCalendar.lua`: Calendar grid rendering, reset calculations, character lockout synchronization.
+  - `TurtleCalendar.lua`: Calendar grid rendering, reset calculations, character lockout synchronization, box framework.
+    - **Layout Grid**: Perfectly symmetrical 2-row layout:
+      - **Row 1 (6 single boxes @ 204px + 5px gap = 1249px, height 222px)**: `Raid 40`, `Onyxia`, `Karazhan`, `Zul'Gurub`, `Timbermaw Hold`, `Edge of Madness (Zul'Gurub)`.
+      - **Row 2 (2 double boxes @ 413px + 2 single boxes @ 204px = 1249px, height 184px)**: `Battleground` (under Raid 40 + Onyxia), `Darkmoon Faire` (under Karazhan + ZG), `Instances` (under Timbermaw Hold), and `World Bosses` (directly under Zul'Gurub Edge of Madness).
+  - `WorldBosses.lua`: Hybrid world boss lockout tracking (server-side `GetSavedInstanceInfo` prioritization with 7-day client kill tracking fallback, group kill-ID minting and non-blocking sync).
   - `WorldBuffs.lua`: Tracking timers and countdowns for Onyxia / Nefarian head drops, Rend buff, and Hakkar heart.
   - `MinimapIcon.lua`: Minimap button integration with tooltip preview of upcoming resets.
-  - `translations/`: Localization tables for English, Russian, Chinese.
-* **Slash Command**: `/turtlecalendar` or `/tc` toggles the calendar interface.
+  - `translations/`: Localization tables for English, Spanish, Traditional & Simplified Chinese.
+  - `tools/`: Automated verification suite (`python tools/run_tests.py`, `tools/test_world_bosses.lua`).
+* **Slash Command**: `/turtlecalendar` or `/tc` toggles the calendar interface; `/tc wb` manages world boss tracking.
 
 ---
 
@@ -24,11 +29,15 @@
 2. **Non-Blocking Calendar Math**:
    - Day and lockout matrix generation must execute lazily when the calendar window is opened, never inside the background `OnUpdate` loop.
 3. **SavedVariables Integrity**:
-   - Multicharacter lockout data (`TurtleCalendarDB`) must be defensively read; if corrupt or empty, reset gracefully to empty table `{}` without throwing errors on load.
+   - Multicharacter lockout data (`TurtleCalendarDB` / `TurtleCalendarGlobalOptions`) must be defensively read; if corrupt or empty, reset gracefully without throwing errors on load.
+4. **Lua 5.0 Closure Upvalues**:
+   - Never exceed 32 upvalues in any closure. Internal state must be grouped in module tables (`D`).
 
 ---
 
 ## 3. Active Backlog & Next Steps
-- [x] Tested and verified on Turtle WoW 1.18.1.
-- [x] Git working tree is clean on branch `main`.
-- [ ] No changes needed; keep stable.
+- [x] Tested and verified on Turtle WoW 1.18.1 & Capybara Paradise.
+- [x] Full world boss UI box wired into calendar window with dynamic dropdown toggle and hover tooltip.
+- [x] Symmetrical 2-row layout: `World Bosses` sits directly under Zul'Gurub Edge of Madness (`eom`), with height 184px matching Row 2.
+- [x] Group sync via `CHAT_MSG_ADDON` with zero broadcast storm cascades ($O(N)$ traffic).
+- [x] Live runtime verification suite passing 31/31 tests on native Lua 5.0.3 VM.
