@@ -20,8 +20,8 @@ jobs:
 
       - name: Create Release Zip
         run: |
-          rm -rf TurtleCalendar/.git TurtleCalendar/.github TurtleCalendar/tools
-          rm -f TurtleCalendar/.gitignore TurtleCalendar/.editorconfig TurtleCalendar/.luarc.json
+          rm -rf TurtleCalendar/.git TurtleCalendar/.github TurtleCalendar/tools TurtleCalendar/tests TurtleCalendar/__pycache__
+          rm -f TurtleCalendar/*.py TurtleCalendar/.gitignore TurtleCalendar/.editorconfig TurtleCalendar/.luarc.json TurtleCalendar/.gitattributes
           rm -f TurtleCalendar/HANDOFF.md TurtleCalendar/AGENTS.md
           zip -r TurtleCalendar.zip TurtleCalendar
 
