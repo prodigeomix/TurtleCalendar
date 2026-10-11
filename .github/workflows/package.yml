@@ -20,7 +20,9 @@ jobs:
 
       - name: Create Release Zip
         run: |
-          rm -rf TurtleCalendar/.git TurtleCalendar/.github
+          rm -rf TurtleCalendar/.git TurtleCalendar/.github TurtleCalendar/tools
+          rm -f TurtleCalendar/.gitignore TurtleCalendar/.editorconfig TurtleCalendar/.luarc.json
+          rm -f TurtleCalendar/HANDOFF.md TurtleCalendar/AGENTS.md
           zip -r TurtleCalendar.zip TurtleCalendar
 
       - name: Upload Release Asset
@@ -28,3 +30,4 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: TurtleCalendar.zip
+          generate_release_notes: true
