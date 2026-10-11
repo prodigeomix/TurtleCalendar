@@ -87,7 +87,7 @@ assert_true( "wb box registered in m.db.boxes", m.find( "wb", m.db.boxes, 1 ) ~=
 -- TEST 2: Frame Creation & Box Attachment
 TurtleCalendar.show()
 assert_true( "wb box created in m.boxes", m.boxes.wb ~= nil )
-assert_true( "wb box rows initialized (12 bosses)", m.boxes.wb.rows ~= nil and table.getn( m.boxes.wb.rows ) == 12 )
+assert_true( "wb box rows initialized (11 bosses)", m.boxes.wb.rows ~= nil and table.getn( m.boxes.wb.rows ) == 11 )
 assert_true( "wb box footer initialized", m.boxes.wb.wb_footer ~= nil )
 assert_eq( "wb box height is 184 (row 2)", m.boxes.wb:GetHeight(), 184 )
 assert_eq( "wb box is positioned after instances", m.db.boxes[ table.getn( m.db.boxes ) ][ 1 ], "wb" )

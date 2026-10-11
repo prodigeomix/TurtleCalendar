@@ -24,7 +24,6 @@ M.bosses = {
 	{ key = "ostarius", name = "Ostarius", aliases = { "ostarius" } },
 	{ key = "concavius", name = "Concavius", aliases = { "concavius" } },
 	{ key = "cowking", name = "Cow King", aliases = { "cow king" } },
-	{ key = "clackora", name = "Cla'ckora", aliases = { "cla'ckora", "clackora" } },
 }
 
 local C_RED = { 0.77, 0.12, 0.23 }
@@ -394,12 +393,12 @@ local function init_box( b )
 	b.rows = {}
 	for i = 1, getn( M.bosses ) do
 		-- Anchor each row from TopLeft downwards (header ends around y = -34)
-		local y = -36 - ( ( i - 1 ) * 10.5 )
+		local y = -36 - ( ( i - 1 ) * 11 )
 
 		local hover = CreateFrame( "Frame", nil, b )
 		hover:SetPoint( "TopLeft", b, "TopLeft", 6, y )
 		hover:SetPoint( "TopRight", b, "TopRight", -6, y )
-		hover:SetHeight( 10 )
+		hover:SetHeight( 11 )
 		hover:EnableMouse( true )
 		hover.index = i
 		hover:SetScript( "OnEnter", on_row_enter )

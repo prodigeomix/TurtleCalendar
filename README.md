@@ -31,10 +31,10 @@ TurtleCalendar includes client-side tracking and group synchronization for outdo
 5. **Anti-False-Positive Filter**: Defensively ignores boss adds, shades, images, and minions (e.g. *Shade of Taerar* will never accidentally trigger Taerar's lockout).
 6. **Cross-Character Alt Tracker**: Hovering over any boss row in the calendar displays whether any of your other characters on the realm are currently locked.
 
-### Tracked World Bosses (12 Bosses)
+### Tracked World Bosses (11 Bosses)
 * **Vanilla World Bosses**: Azuregos (*Azshara*), Lord Kazzak (*Blasted Lands*)
 * **Dragons of Nightmare**: Emeriss, Lethon, Taerar, Ysondre (*Duskwood, Hinterlands, Feralas, Ashenvale*)
-* **Custom Turtle WoW Bosses**: Nerubian Overseer, Dark Reaver of Karazhan (*Deadwind Pass*), Ostarius, Concavius, Cow King, Cla'ckora
+* **Custom Turtle WoW Bosses**: Nerubian Overseer, Dark Reaver of Karazhan (*Deadwind Pass*), Ostarius, Concavius, Cow King
 
 ---
 
