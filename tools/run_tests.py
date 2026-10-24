@@ -31,6 +31,10 @@ CHECKS = [
     ("World Bosses Live Runtime (test_world_bosses.lua)", [LUA50_BIN, os.path.join(SCRIPT_DIR, "test_world_bosses.lua")]),
 ]
 
+GLOBAL_AUDITOR = os.path.expanduser("~/.gemini/config/skills/wow-addon-auditor/scripts/audit_addon.py")
+if os.path.exists(GLOBAL_AUDITOR):
+    CHECKS.append(("AddOn Auditor & Engine Resilience (global wow-addon-auditor)", [sys.executable, GLOBAL_AUDITOR, ADDON_ROOT]))
+
 def main():
     print("=" * 80)
     print("TURTLECALENDAR AUTOMATED VERIFICATION SUITE")

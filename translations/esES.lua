@@ -15,6 +15,7 @@ TurtleCalendar_translation[ "esES" ] = {
 	[ "Condensed timers" ] = "Temporizadores condensados",
 	[ "Show timers" ] = "Mostrar temporizadores",
 	[ "Show dates" ] = "Mostrar fechas",
+	[ "Use server time" ] = "Usar hora del servidor",
 	[ "Battleground" ] = "Campo de batalla",
 	[ "Darkmoon faire" ] = "Feria de la Luna Negra",
 	[ "Instances" ] = "Mazmorras",

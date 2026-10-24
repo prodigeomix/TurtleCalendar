@@ -1,9 +1,9 @@
 # TurtleCalendar — Project Status & Handoff Document
 
-> **Last Updated:** 2026-10-11 10:33 (Antigravity Assistant)  
+> **Last Updated:** 2026-10-24 20:20 (Antigravity Assistant)  
 > **Status:** Production Ready (v1.4.4)  
 > **Target Engine:** Turtle WoW 1.18.1 / Vanilla 1.12.1 Client (Turtle WoW & Capybara Paradise realms)  
-> **Active Verification:** `python tools/run_tests.py` → **ALL 4 CHECKS PASS** (Native Lua 5.0.3 syntax compiler, Lua 5.0 AST compliance, AST global leaks, and 31/31 live runtime tests in native Lua 5.0.3 VM)
+> **Active Verification:** `python tools/run_tests.py` → **ALL 5 CHECKS PASS** (Native Lua 5.0.3 syntax compiler, Lua 5.0 AST compliance, AST global leaks, 46 live runtime tests, and WoW AddOn Auditor & Engine Resilience)
 
 ---
 
@@ -40,4 +40,7 @@
 - [x] Full world boss UI box wired into calendar window with dynamic dropdown toggle and hover tooltip.
 - [x] Symmetrical 2-row layout: `World Bosses` sits directly under Zul'Gurub Edge of Madness (`eom`), with height 184px matching Row 2.
 - [x] Group sync via `CHAT_MSG_ADDON` with zero broadcast storm cascades ($O(N)$ traffic).
-- [x] Live runtime verification suite passing 31/31 tests on native Lua 5.0.3 VM.
+- [x] Live runtime verification suite passing 46/46 tests on native Lua 5.0.3 VM.
+- [x] Integrated WoW Addon Auditor & Engine Resilience gate (`audit_addon.py`) verifying 0 criticals/warnings.
+- [x] Real-time clock auto-calibration via `GetSavedInstanceInfo`, `m.db.use_server_time` server timezone toggle, dynamic weekly reset calculation, and guarded Kalimdor skybox offset.
+- [x] Calibrated Edge of Madness (EOM) boss rotation on Eversong Wilds against Capybara Chronicle telemetry: anchor set to `2026-10-23 04:00 UTC` (Gri'lek), eliminating the desync where Renataki was falsely displayed.

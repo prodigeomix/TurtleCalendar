@@ -232,6 +232,52 @@ assert_true( "Manual kill generated valid ID", m.gdb.worldbosses.ids[ "Capybara"
 m.world_bosses.slash( "clear reaver" )
 assert_true( "Manual clear removed reaver", m.gdb.worldbosses.data[ "Capybara" ][ "Carbon" ][ "reaver" ] == nil )
 
+-- TEST 13: Realm Timezones, Clock Drift, and Dynamic Weekly Reset
+m.realm = "Eversong Wilds"
+assert_eq( "Eversong Wilds tz_offset is 8", m.get_realm_tz_offset(), 8 )
+m.realm = "Nordanaar"
+assert_eq( "Nordanaar tz_offset is 1", m.get_realm_tz_offset(), 1 )
+
+m.clock_drift = 25
+assert_eq( "get_server_time incorporates clock_drift", m.get_server_time(), time() + 25 )
+m.clock_drift = 0
+
+m.realm = "Eversong Wilds"
+local test_epoch = 1792858809 -- Saturday Oct 24, 2026
+local last_reset = m.get_last_weekly_reset( test_epoch )
+assert_true( "Weekly reset is in the past", last_reset <= test_epoch )
+assert_eq( "Weekly reset anchor difference is multiple of 7 days", math.mod( last_reset - m.timers[ "Eversong Wilds" ][ "raid40" ].anchor, 7 * 86400 ), 0 )
+
+m.server_time = nil
+local next_t = m.next_raid( m.timers[ "Eversong Wilds" ][ "raid40" ] )
+assert_true( "next_raid survives nil m.server_time", next_t ~= nil and next_t > 0 )
+
+-- TEST 14: Edge of Madness Rotation Calibration (Eversong Wilds)
+m.realm = "Eversong Wilds"
+local oct24_ts = 1792858809 -- Saturday Oct 24, 2026 (Live in-game verified timestamp)
+m.server_time = oct24_ts
+local eom_timer = m.timers[ "Eversong Wilds" ][ "eom" ]
+local elapsed = oct24_ts - eom_timer.anchor
+local cycle = math.floor( elapsed / (eom_timer.interval * 86400) )
+local active_eom_idx = math.mod( cycle, 4 ) + 1
+assert_eq( "Eversong Wilds active EOM boss on Oct 24, 2026 is Gri'lek (index 1)", active_eom_idx, 1 )
+assert_eq( "Gri'lek boss id matches", m.eom[ active_eom_idx ].id, "grilek" )
+
+-- Cycle + 1 (+14 days) -> Hazza'rah (index 2)
+local next_cycle_ts = oct24_ts + 14 * 86400
+local c2 = math.floor( (next_cycle_ts - eom_timer.anchor) / (eom_timer.interval * 86400) )
+assert_eq( "EOM cycle + 1 advances to Hazza'rah (index 2)", math.mod( c2, 4 ) + 1, 2 )
+
+-- Cycle + 2 (+28 days) -> Renataki (index 3)
+local c3_ts = oct24_ts + 28 * 86400
+local c3 = math.floor( (c3_ts - eom_timer.anchor) / (eom_timer.interval * 86400) )
+assert_eq( "EOM cycle + 2 advances to Renataki (index 3)", math.mod( c3, 4 ) + 1, 3 )
+
+-- Cycle + 3 (+42 days) -> Wushoolay (index 4)
+local c4_ts = oct24_ts + 42 * 86400
+local c4 = math.floor( (c4_ts - eom_timer.anchor) / (eom_timer.interval * 86400) )
+assert_eq( "EOM cycle + 3 advances to Wushoolay (index 4)", math.mod( c4, 4 ) + 1, 4 )
+
 print( "================================================================================" )
 print( string.format( "TEST RESULTS: %d PASSED, %d FAILED", passed, failed ) )
 print( "================================================================================" )

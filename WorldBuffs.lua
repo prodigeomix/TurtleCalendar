@@ -92,8 +92,9 @@ function M.new()
 	local function get_server_time()
 		local h, min = GetGameTime()
 
-		-- TurtleWoW has continent timezones, so we need to normalize the server time if player is on Kalimdor
-		if is_on_kalimdor then
+		-- TurtleWoW EU has continent timezones, so we only normalize server time on Kalimdor for EU realms
+		local is_turtle_eu = (m.realm == "Nordanaar" or m.realm == "Tel'Abim")
+		if is_on_kalimdor and is_turtle_eu then
 			h = mod( h + 12, 24 )
 		end
 

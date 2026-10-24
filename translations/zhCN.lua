@@ -17,6 +17,7 @@ TurtleCalendar_translation[ "zhCN" ] = {
 	[ "Condensed timers" ] = "精简计时器",
 	[ "Show timers" ] = "显示计时器",
 	[ "Show dates" ] = "显示日期",
+	[ "Use server time" ] = "使用服务器时间",
 	[ "Battleground" ] = "战场",
 	[ "Darkmoon faire" ] = "暗月马戏团",
 	[ "Instances" ] = "副本",

@@ -17,6 +17,7 @@ TurtleCalendar_translation[ "enUS" ] = {
 	[ "Condensed timers" ] = "Condensed timers",
 	[ "Show timers" ] = "Show timers",
 	[ "Show dates" ] = "Show dates",
+	[ "Use server time" ] = "Use server time",
 	[ "Battleground" ] = "Battleground",
 	[ "Darkmoon faire" ] = "Darkmoon faire",
 	[ "Instances" ] = "Instances",

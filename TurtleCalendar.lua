@@ -93,6 +93,20 @@ TurtleCalendar.raids = {
 	[ m.T[ "Timbermaw Hold" ] ] = "tmh",
 }
 
+TurtleCalendar.realm_tz = {
+	[ "Eversong Wilds" ] = 8,
+	[ "Basin of Stars" ] = 8,
+	[ "Gehennas" ] = 8,
+	[ "Nordanaar" ] = 1,
+	[ "Tel'Abim" ] = 1,
+	[ "Ambershire" ] = 1,
+}
+
+function TurtleCalendar.get_realm_tz_offset()
+	local r = m.realm or GetRealmName() or "Eversong Wilds"
+	return m.realm_tz[ r ] or m.realm_tz[ "Eversong Wilds" ] or 0
+end
+
 TurtleCalendar.quests = {
 	[ "Call to Arms: Cleansing the Corruption" ] = {},
 	[ "Call to Arms: Dungeon Delving" ] = {},
@@ -101,6 +115,7 @@ TurtleCalendar.quests = {
 
 function TurtleCalendar:init()
 	self.utc_offset = m.get_utc_offset()
+	self.server_time = m.get_server_time()
 	self.reset_pattern = string.gsub( INSTANCE_RESET_SUCCESS, "%%s", "(.+)" )
 	self.timers = {
 		[ "Eversong Wilds" ] = {
@@ -109,7 +124,7 @@ function TurtleCalendar:init()
 			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 15, hour = 4 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 4 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 11, hour = 4 } ) },
-			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 30, hour = 23 } ) }
 		},
@@ -119,7 +134,7 @@ function TurtleCalendar:init()
 			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 3 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
-			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
@@ -129,7 +144,7 @@ function TurtleCalendar:init()
 			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
-			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2025, month = 4, day = 7, hour = 23 } ) },
+			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
@@ -194,6 +209,7 @@ function TurtleCalendar.events.PLAYER_LOGIN()
 	if m.db.date_format == nil then if loc == "zhCN" or loc == "zhTW" then m.db.date_format = "%Y/%m/%d" else m.db.date_format = "%d.%m.%Y" end end
 	if m.db.show_timers == nil then m.db.show_timers = true end
 	if m.db.show_dates == nil then m.db.show_dates = false end
+	if m.db.use_server_time == nil then m.db.use_server_time = false end
 	if m.db.condensed_timers == nil then m.db.condensed_timers = false end
 	if m.db.show_world_buffs == nil then m.db.show_world_buffs = true end
 	if m.db.show_sw_buffs == nil then m.db.show_sw_buffs = true end
@@ -349,6 +365,17 @@ function TurtleCalendar.events.UPDATE_INSTANCE_INFO()
 				reset = instanceReset,
 				timestamp = time()
 			}
+
+			-- Auto-calibrate clock drift against authoritative server instance timer
+			local raid_key = m.raids and m.raids[ instanceName ]
+			if raid_key and m.timers[ m.realm ] and m.timers[ m.realm ][ raid_key ] and instanceReset and instanceReset > 0 then
+				local next_target = m.next_raid( m.timers[ m.realm ][ raid_key ] )
+				local real_epoch = next_target - instanceReset
+				local drift = real_epoch - time()
+				if math.abs( drift ) < 3600 then
+					m.clock_drift = drift
+				end
+			end
 		end
 	end
 
@@ -1151,7 +1178,13 @@ function TurtleCalendar.on_update()
 				end
 
 				if m.db.show_dates then
-					box.date:SetText( date( m.db.date_format, next ) )
+					if m.db.use_server_time then
+						local tz_offset = m.get_realm_tz_offset()
+						local server_epoch = next + (tz_offset * 3600)
+						box.date:SetText( date( "!" .. m.db.date_format, server_epoch ) )
+					else
+						box.date:SetText( date( m.db.date_format, next ) )
+					end
 				end
 			end
 		end
@@ -1282,7 +1315,16 @@ function TurtleCalendar.refresh()
 	end
 
 	-- Edge of Madness
-	local eom_idx = mod( math.floor( (m.sday + 2) / m.timers[ m.realm ][ "eom" ].interval ), 4 ) + 1
+	local eom_timer = m.timers[ m.realm ] and m.timers[ m.realm ][ "eom" ]
+	local eom_idx
+	if eom_timer and eom_timer.anchor and eom_timer.anchor >= 1700000000 then
+		local now = m.server_time or TurtleCalendar.get_server_time()
+		local elapsed = now - eom_timer.anchor
+		local cycle = elapsed >= 0 and math.floor( elapsed / (eom_timer.interval * 86400) ) or 0
+		eom_idx = mod( cycle, 4 ) + 1
+	else
+		eom_idx = mod( math.floor( (m.sday + 2) / (eom_timer and eom_timer.interval or 14) ), 4 ) + 1
+	end
 
 	m.boxes.eom.header:SetText( m.eom[ eom_idx ].name )
 	m.boxes.eom.mob:SetTexture( m.images[ "eom_" .. m.eom[ eom_idx ].id ].image )
@@ -1360,6 +1402,13 @@ function TurtleCalendar.popup_initialize( level )
 			arg1 = "show_dates",
 			keepShownOnClick = 1,
 			checked = m.db.show_dates,
+			func = toggle_setting
+		} )
+		UIDropDownMenu_AddButton( {
+			text = m.T[ "Use server time" ],
+			arg1 = "use_server_time",
+			keepShownOnClick = 1,
+			checked = m.db.use_server_time,
 			func = toggle_setting
 		} )
 		UIDropDownMenu_AddButton( { isTitle = true, notCheckable = true, text = m.T[ "Raids" ] } )
@@ -1670,10 +1719,11 @@ end
 
 ---Universal epoch time (seconds since 1970-01-01 00:00:00 UTC).
 ---In WoW 1.12, time() returns POSIX epoch seconds, which is identical on every client globally.
+---Applies live clock drift calibration when active instance lockouts are probed.
 ---@return integer seconds
 ---@nodiscard
 function TurtleCalendar.get_server_time()
-	return time()
+	return time() + (m.clock_drift or 0)
 end
 
 ---@return integer
@@ -1687,12 +1737,14 @@ end
 ---@return integer seconds
 ---@nodiscard
 function TurtleCalendar.next_raid( raid )
-	if m.server_time < raid.anchor then
+	local now = m.server_time or TurtleCalendar.get_server_time()
+	if not raid or not raid.anchor then return 0 end
+	if now < raid.anchor then
 		return raid.anchor
 	end
 
-	local elapsed = m.server_time - raid.anchor
-	local interval = raid.interval * 86400
+	local elapsed = now - raid.anchor
+	local interval = (raid.interval or 7) * 86400
 	local cycles = math.floor( elapsed / interval )
 
 	return raid.anchor + (cycles + 1) * interval
@@ -1715,9 +1767,20 @@ function TurtleCalendar.seconds_dhms( seconds )
 	return days, hours, min, seconds
 end
 
-function TurtleCalendar.get_last_thursday( ts )
-	ts = ts or time()
-	-- Weekly reset occurs on Thursday at 04:00 UTC
+---Calculate the timestamp of the most recent weekly reset for the active realm.
+---Dynamically links to the realm's 7-day raid40 anchor (e.g. Sunday on Eversong Wilds, Wednesday on Nordanaar).
+---@param ts integer|nil
+---@return integer
+function TurtleCalendar.get_last_weekly_reset( ts )
+	ts = ts or TurtleCalendar.get_server_time()
+	local realm_timers = m.timers and (m.timers[ m.realm ] or m.timers[ "Eversong Wilds" ])
+	local raid40 = realm_timers and realm_timers[ "raid40" ]
+	if raid40 and raid40.anchor then
+		local interval = (raid40.interval or 7) * 86400
+		return raid40.anchor + math.floor( (ts - raid40.anchor) / interval ) * interval
+	end
+
+	-- Legacy fallback: Thursday at 04:00 UTC
 	local t = date( "!*t", ts - 14400 )
 	local wday = t.wday
 	local days_back = (wday >= 5) and (wday - 5) or (7 - (5 - wday))
@@ -1725,6 +1788,7 @@ function TurtleCalendar.get_last_thursday( ts )
 
 	return (ts - 14400) - (days_back * 86400) - day_sec
 end
+TurtleCalendar.get_last_thursday = TurtleCalendar.get_last_weekly_reset
 
 ---@param value string|number
 ---@param t table
