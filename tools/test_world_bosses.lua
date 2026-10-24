@@ -262,19 +262,25 @@ local cycle = math.floor( elapsed / (eom_timer.interval * 86400) )
 local active_eom_idx = math.mod( cycle, 4 ) + 1
 assert_eq( "Eversong Wilds active EOM boss on Oct 24, 2026 is Gri'lek (index 1)", active_eom_idx, 1 )
 assert_eq( "Gri'lek boss id matches", m.eom[ active_eom_idx ].id, "grilek" )
+assert_eq( "EOM interval is 12 days (4 ZG lockouts)", eom_timer.interval, 12 )
 
--- Cycle + 1 (+14 days) -> Hazza'rah (index 2)
-local next_cycle_ts = oct24_ts + 14 * 86400
+-- Next reset occurs on Wednesday Nov 04, 2026 at 04:00 UTC (Reset #28)
+local next_eom = m.next_raid( eom_timer )
+local expected_next = eom_timer.anchor + (12 * 86400)
+assert_eq( "EOM next reset is anchor + 12 days", next_eom, expected_next )
+
+-- Cycle + 1 (+12 days) -> Hazza'rah (index 2)
+local next_cycle_ts = oct24_ts + 12 * 86400
 local c2 = math.floor( (next_cycle_ts - eom_timer.anchor) / (eom_timer.interval * 86400) )
 assert_eq( "EOM cycle + 1 advances to Hazza'rah (index 2)", math.mod( c2, 4 ) + 1, 2 )
 
--- Cycle + 2 (+28 days) -> Renataki (index 3)
-local c3_ts = oct24_ts + 28 * 86400
+-- Cycle + 2 (+24 days) -> Renataki (index 3)
+local c3_ts = oct24_ts + 24 * 86400
 local c3 = math.floor( (c3_ts - eom_timer.anchor) / (eom_timer.interval * 86400) )
 assert_eq( "EOM cycle + 2 advances to Renataki (index 3)", math.mod( c3, 4 ) + 1, 3 )
 
--- Cycle + 3 (+42 days) -> Wushoolay (index 4)
-local c4_ts = oct24_ts + 42 * 86400
+-- Cycle + 3 (+36 days) -> Wushoolay (index 4)
+local c4_ts = oct24_ts + 36 * 86400
 local c4 = math.floor( (c4_ts - eom_timer.anchor) / (eom_timer.interval * 86400) )
 assert_eq( "EOM cycle + 3 advances to Wushoolay (index 4)", math.mod( c4, 4 ) + 1, 4 )
 

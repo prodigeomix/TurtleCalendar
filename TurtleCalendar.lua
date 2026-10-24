@@ -124,7 +124,7 @@ function TurtleCalendar:init()
 			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2026, month = 8, day = 15, hour = 4 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 4 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 11, hour = 4 } ) },
-			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
+			[ "eom" ]    = { interval = 12, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2026, month = 8, day = 12, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2026, month = 8, day = 30, hour = 23 } ) }
 		},
@@ -134,7 +134,7 @@ function TurtleCalendar:init()
 			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 3 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 28, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 27, hour = 3 } ) },
-			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
+			[ "eom" ]    = { interval = 12, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
@@ -144,7 +144,7 @@ function TurtleCalendar:init()
 			[ "kara" ]   = { interval = 5, anchor = m.time_utc( { year = 2025, month = 9, day = 2, hour = 3 } ) },
 			[ "zg" ]     = { interval = 3, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 3 } ) },
 			[ "tmh" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 29, hour = 3 } ) },
-			[ "eom" ]    = { interval = 14, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
+			[ "eom" ]    = { interval = 12, anchor = m.time_utc( { year = 2026, month = 10, day = 23, hour = 4 } ) },
 			[ "bg" ]     = { interval = 1, anchor = m.time_utc( { year = 2025, month = 8, day = 31, hour = 23 } ) },
 			[ "dmf" ]    = { interval = 7, anchor = m.time_utc( { year = 2025, month = 8, day = 30, hour = 23 } ) }
 		},
